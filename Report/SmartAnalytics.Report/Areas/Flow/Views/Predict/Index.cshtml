@@ -1,0 +1,274 @@
+﻿@using SmartAnalytics.Report.Extendsions
+@model List<SmartAnalytics.Services.Models.TimeSpanByHourPageItem>
+@{
+    ViewBag.Title = "流量趋势";
+}
+
+<input type="hidden" id="domain" name="domain" value="@ViewBag.SiteDomain" />
+<input type="hidden" id="date" name="date" value="@ViewBag.Date" />
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Flow">流量分析</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <!--图表栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">趋势分析(@ViewBag.Date)</h3>
+            </div>
+            <div class="panel-body">
+                <div id="map-PredictTimeSpanByHour" style="height: 300px;"></div>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">时段</th>
+                        <th class="center">PV</th>
+                        <th class="center">UV</th>
+                        <th class="center">IP</th>
+                        <th class="center">新访客</th>
+                        <th class="center">新访客比率</th>
+                        <th class="center">访问次数</th>
+                        <th class="center">人均浏览页数</th>
+                        <th class="center">平均访问深度</th>
+                        <th class="center">平均访问时长</th>
+                        <th class="center">跳出率</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        if (Model[i].IsEmpty)
+                        {
+                            <tr>
+                                <td>@Model[i].TotalHour.ToTimeSpanString()</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@Model[i].TotalHour.ToTimeSpanString()</td>
+                                <td>@Model[i].PageView</td>
+                                <td>@Model[i].UniqueUser</td>
+                                <td>@Model[i].UniqueIp</td>
+                                <td>@Model[i].NewUniqueUser</td>
+                                <td>@(Model[i].NewUniqueUserRate * 100)%</td>
+                                <td>@Model[i].AccessNumber</td>
+                                <td>@Model[i].UserViewPageAverage</td>
+                                <td>@Model[i].ViewPageDeptAverage</td>
+                                <td>@Model[i].ViewPageTimeSpanAverage.ToTimeSpan()</td>
+                                <td>@(Model[i].BounceRate * 100)%</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：预测每个小时的流量。
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require.config({
+        paths: {
+            echarts: '/Scripts/ECharts'
+        }
+    });
+    //渲染ECharts
+    function RenderECharts(chartsArea, chartOption) {
+        require([
+        'echarts',
+        'echarts/chart/line',
+        'echarts/chart/bar'
+        ], function (ec) {
+            var myChart = ec.init(document.getElementById(chartsArea));
+            myChart.setOption(chartOption);
+        });
+    }
+
+    $(function () {
+
+        //指标提示框
+        $('[data-toggle="popover"]').popover({ animation: true, trigger: 'hover' });
+
+        var domain = $('#domain').attr('value');
+        var day = $('#date').attr('value');
+        
+        //获取实际流量数据
+        TongJiApi.TimeSpanByHour(domain, day, function (data) {
+            
+            //获取预测流量数据
+            TongJiApi.PredictTimeSpanByHour(domain, day, function (predictData) {
+
+                var option = getOption(domain, day, data, predictData);
+                RenderECharts('map-PredictTimeSpanByHour', option);
+
+            });
+
+        });
+        
+    });
+
+    function getOption(domain, day, data, predictData) {
+
+        var option = {
+            title: {
+                text: '流量趋势',
+                subtext: domain
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    var tip = '';
+                    if (params.length > 0) {
+                        var hour = parseInt(params[0].name);
+                        var prefix = '';
+                        if (hour > 0 && hour < 05) {
+                            prefix = '凌晨';
+                        } else if (hour >= 05 && hour < 08) {
+                            prefix = '早上';
+                        } else if (hour >= 08 && hour < 12) {
+                            prefix = '上午';
+                        } else if (hour >= 12 && hour < 13) {
+                            prefix = '中午';
+                        } else if (hour >= 13 && hour < 18) {
+                            prefix = '下午';
+                        } else if (hour >= 18 && hour < 20) {
+                            prefix = '傍晚';
+                        } else if (hour >= 20) {
+                            prefix = '夜晚';
+                        }
+                        tip += prefix + params[0].name + '时<br />';
+                    }
+                    for (var i = 0; i < params.length; i++) {
+                        tip += params[i].seriesName + '：' + params[i].value + '<br />';
+                    }
+                    return tip;
+                }
+            },
+            legend: {
+                data: ['实际PV', '实际UV', '实际IP', '预测PV', '预测UV', '预测IP']
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    name: '时段',
+                    boundaryGap: false,
+                    data: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
+                }
+            ],
+            yAxis: [
+                {
+                    name: '数量',
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '实际PV',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '实际UV',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '实际IP',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '预测PV',
+                    type: 'line',
+                    data: [],
+                    itemStyle: {
+                        normal: {
+                            lineStyle: {
+                                type: 'dashed'
+                            }
+                        }
+                    }
+                },
+                {
+                    name: '预测UV',
+                    type: 'line',
+                    data: [],
+                    itemStyle: {
+                        normal: {
+                            lineStyle: {
+                                type: 'dashed'
+                            }
+                        }
+                    }
+                },
+                {
+                    name: '预测IP',
+                    type: 'line',
+                    data: [],
+                    itemStyle: {
+                        normal: {
+                            lineStyle: {
+                                type: 'dashed'
+                            }
+                        }
+                    }
+                }
+            ]
+        };
+
+        $.each(data, function (k, v) {
+            //真实流量
+            option.series[0].data.push(v.PageView);
+            option.series[1].data.push(v.UniqueUser);
+            option.series[2].data.push(v.UniqueIp);
+        });
+
+        $.each(predictData, function (k, v) {
+            //预测流量
+            option.series[3].data.push(v.PageView);
+            option.series[4].data.push(v.UniqueUser);
+            option.series[5].data.push(v.UniqueIp);
+        });
+
+        return option;
+    }
+
+</script>

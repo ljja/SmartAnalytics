@@ -1,0 +1,50 @@
+﻿@model List<SmartAnalytics.Entities.Domain>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">统计网站</h3>
+    </div>
+    <div class="panel-body">
+        <ul class="nav nav-pills" id="domain-all">
+            @foreach (var m in Model)
+            {
+                if (string.Compare(ViewBag.SiteDomain, m.SiteDomain) == 0)
+                {
+                    <li class="active">
+                        <a title="@m.DomainAlias" value="@m.SiteDomain"
+                           href="@ViewBag.CurrentPath?domain=@m.SiteDomain&date=@ViewBag.Date&beginDate=@ViewBag.BeginDate&endDate=@ViewBag.EndDate">
+                            @m.SiteDomain (@m.DomainAlias)
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a title="@m.DomainAlias" value="@m.SiteDomain"
+                           href="@ViewBag.CurrentPath?domain=@m.SiteDomain&date=@ViewBag.Date&beginDate=@ViewBag.BeginDate&endDate=@ViewBag.EndDate">
+                            @m.SiteDomain (@m.DomainAlias)
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#domain-all a').click(function () {
+
+            var domain = $(this).attr('value');
+
+            $('#domain').attr('value', domain);
+
+            $(this).parent('li').addClass('active').siblings().removeClass("active");
+
+        });
+
+    });
+
+</script>

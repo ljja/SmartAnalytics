@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9DADB687-7B56-4216-B3FB-9FB21B68C493}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartAnalytics.Services</RootNamespace>
+    <AssemblyName>SmartAnalytics.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.0.481\lib\net45\StackExchange.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.133\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extendsions\ImageExtendsions.cs" />
+    <Compile Include="HeatMap\ColorRamp.cs" />
+    <Compile Include="HeatMap\ColorUtil.cs" />
+    <Compile Include="HeatMap\HeatMapMaker.cs" />
+    <Compile Include="HeatMap\HeatPoint.cs" />
+    <Compile Include="IDomainService.cs" />
+    <Compile Include="IFlowService.cs" />
+    <Compile Include="IManageService.cs" />
+    <Compile Include="Impl\DomainService.cs" />
+    <Compile Include="Impl\FlowService.cs" />
+    <Compile Include="Impl\HeatMapService.cs" />
+    <Compile Include="Impl\ManageService.cs" />
+    <Compile Include="Impl\NewOldVisitorByDayTaskService.cs" />
+    <Compile Include="Impl\OriginCategoryByHourTaskService.cs" />
+    <Compile Include="Impl\OriginPageByHourTaskService.cs" />
+    <Compile Include="Impl\OriginService.cs" />
+    <Compile Include="Impl\OriginWordByDayTaskService.cs" />
+    <Compile Include="Impl\ProfileService.cs" />
+    <Compile Include="Impl\SiteCategoryService.cs" />
+    <Compile Include="Impl\SurveyDomainByHourTaskService.cs" />
+    <Compile Include="Impl\SurveyPageByDayTaskService.cs" />
+    <Compile Include="Impl\SurveyService.cs" />
+    <Compile Include="Impl\TimeSpanByDayTaskService.cs" />
+    <Compile Include="Impl\TimeSpanByHourTaskService.cs" />
+    <Compile Include="Impl\TimeSpanByMinuteTaskService.cs" />
+    <Compile Include="Impl\UrlMapService.cs" />
+    <Compile Include="Impl\UserManageService.cs" />
+    <Compile Include="Impl\VisitorActiveByDayTaskService.cs" />
+    <Compile Include="Impl\VisitorLoyaltyByDayTaskService.cs" />
+    <Compile Include="Impl\VisitorRegionByDayTaskService.cs" />
+    <Compile Include="Impl\VisitorResolutionByDayTaskService.cs" />
+    <Compile Include="Impl\VisitorService.cs" />
+    <Compile Include="IOriginService.cs" />
+    <Compile Include="IProfileService.cs" />
+    <Compile Include="ISiteCategoryService.cs" />
+    <Compile Include="ISurveyService.cs" />
+    <Compile Include="ITaskService.cs" />
+    <Compile Include="IUrlMapService.cs" />
+    <Compile Include="IUserManageService.cs" />
+    <Compile Include="IVisitorService.cs" />
+    <Compile Include="Models\CategoryListByDatePageItem.cs" />
+    <Compile Include="Models\CategoryListByHourPageItem.cs" />
+    <Compile Include="Models\DomainPageItem.cs" />
+    <Compile Include="Models\HeatMapMessage.cs" />
+    <Compile Include="Models\NewOldVisitorByDayCacheItem.cs" />
+    <Compile Include="Models\OriginCategoryByHourCacheItem.cs" />
+    <Compile Include="Models\OriginDomainListByDatePageItem.cs" />
+    <Compile Include="Models\OriginDomainListByHourPageItem.cs" />
+    <Compile Include="Models\OriginPageByHourCacheItem.cs" />
+    <Compile Include="Models\OriginPageDomainHourPageItem.cs" />
+    <Compile Include="Models\OriginPageDomainPageItem.cs" />
+    <Compile Include="Models\OriginPagePageItem.cs" />
+    <Compile Include="Models\OriginWordByDayCacheItem.cs" />
+    <Compile Include="Models\OriginWordPageItem.cs" />
+    <Compile Include="Models\PredictTimeSpanByHourPageItem.cs" />
+    <Compile Include="Models\RegionListByDayPageItem.cs" />
+    <Compile Include="Models\SiteCategoryCacheModel.cs" />
+    <Compile Include="Models\SurveyDomainByDayPageItem.cs" />
+    <Compile Include="Models\SurveyDomainByHourCacheItem.cs" />
+    <Compile Include="Models\SurveyDomainByHourPageItem.cs" />
+    <Compile Include="Models\SurveyPageByDayPageItem.cs" />
+    <Compile Include="Models\SurveyPageByDayCacheItem.cs" />
+    <Compile Include="Models\TimeSpanByDayPageItem.cs" />
+    <Compile Include="Models\TimeSpanByHourPageItem.cs" />
+    <Compile Include="Models\TimeSpanByMinutePageItem.cs" />
+    <Compile Include="Models\UrlMapPageItem.cs" />
+    <Compile Include="Models\UserLocalPageItem.cs" />
+    <Compile Include="Models\UserLocalMessage.cs" />
+    <Compile Include="Models\UserManagePageItem.cs" />
+    <Compile Include="Models\VisitorActiveByDayCacheItem.cs" />
+    <Compile Include="Models\VisitorActiveByDayPageItem.cs" />
+    <Compile Include="Models\VisitorLoyaltyByDayCacheItem.cs" />
+    <Compile Include="Models\VisitorLoyaltyByDayPageItem.cs" />
+    <Compile Include="Models\VisitorNewOldByDayPageItem.cs" />
+    <Compile Include="Models\VisitorRegionByDayCacheItem.cs" />
+    <Compile Include="Models\VisitorResolutionByDayCacheItem.cs" />
+    <Compile Include="Models\VisitorResolutionByDayPageItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sessions\UserSession.cs" />
+    <Compile Include="Snapshot\ImageLibrary.cs" />
+    <Compile Include="Snapshot\NativeMethods.cs" />
+    <Compile Include="Snapshot\Snapshot.cs" />
+    <Compile Include="Snapshot\UnsafeNativeMethods.cs" />
+    <Compile Include="Snapshot\WebPreview.cs" />
+    <Compile Include="Snapshot\WebPreviewBase.cs" />
+    <Compile Include="Util\Paged.cs" />
+    <Compile Include="Util\PagedResult.cs" />
+    <Compile Include="Util\Paging.cs" />
+    <Compile Include="Util\ServiceContext.cs" />
+    <Compile Include="Util\ValidateCodeHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SmartAnalytics.Cache\SmartAnalytics.Cache.csproj">
+      <Project>{FB9EA5C6-2070-4EAA-B30F-8EB57955094B}</Project>
+      <Name>SmartAnalytics.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartAnalytics.Entities\SmartAnalytics.Entities.csproj">
+      <Project>{53B9FC13-F41B-41E9-B06A-D54FD8200DD9}</Project>
+      <Name>SmartAnalytics.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

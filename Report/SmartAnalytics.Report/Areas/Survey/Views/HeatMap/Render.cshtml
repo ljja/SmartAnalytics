@@ -1,0 +1,46 @@
+﻿
+@{
+
+    Layout = null;
+
+    ViewBag.Title = "热力图";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - SmartAnalytics</title>
+    <style type="text/css">
+        * {
+            border: 0px;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        body {
+            text-align: center;
+            background-image: url(/Content/img/page-bg-black.png);
+        }
+
+    </style>
+
+    <script type="text/javascript">
+
+        var beginTime = '@ViewBag.BeginTime';
+        var endTime = '@ViewBag.EndTime';
+        var screenWidth = @ViewBag.ScreenWidth;
+        var screenHeight = @ViewBag.ScreenHeight;
+        var url = '@ViewBag.UrlEncode';
+        
+    </script>
+
+</head>
+<body >
+
+    <img alt="热力图" class="heatmap" style="width:@(ViewBag.ScreenWidth)px; height: auto;"
+         src="/Survey/HeatMap/RenderImage?BeginTime=@ViewBag.BeginTime&EndTime=@ViewBag.EndTime&ScreenWidth=@ViewBag.ScreenWidth&ScreenHeight=@ViewBag.ScreenHeight&Url=@ViewBag.UrlEncode" />
+
+</body>
+</html>

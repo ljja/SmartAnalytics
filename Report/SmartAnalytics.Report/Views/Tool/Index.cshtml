@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "系统工具";
+}
+
+<div class="row">
+
+    <div class="col-md-3">
+        @Html.Partial("Shared/_QuickMenu")
+    </div>
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">管理后台</a></li>
+            <li><a href="/Tool">系统工具</a></li>
+            <li class="active">
+                <label class="label label-success">常用维护工具</label>
+            </li>
+        </ol>
+
+        <div class="callout callout-primary">
+            <div class="btn-group">
+                <a class="btn btn-default btn-group-lg" href="/Tool/ReLoadSiteCategoryCache">构建分类规则缓存</a>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,111 @@
+﻿@using SmartAnalytics.Report.Filters
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - SmartAnalytics</title>
+
+    <meta http-equiv="refresh" content="600">
+
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datepicker")
+    @RenderSection("scripts", required: false)
+
+    <!--ECharts-->
+    <script src="/Scripts/ECharts/echarts.js"></script>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+</head>
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand" style="padding: 0px;">
+                    <img src="/logo.png" style="width: 160px; height: 50px;">
+                </a>
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (Request.Cookies[UserAuthorizationAttribute.CookieUserName] != null &&
+                             string.IsNullOrWhiteSpace(Request.Cookies[UserAuthorizationAttribute.CookieUserName].Value) == false &&
+                             Session[Session.SessionID] != null)
+                    {
+                        //其他功能菜单
+                        <li><a href="/Flow">流量分析</a></li>
+                        <li><a href="/Origin">来源分析</a></li>
+                        <li><a href="/Visitor">访客分析</a></li>
+                        <li><a href="/Survey">受访分析</a></li>
+                        
+                        <li><a href="/Domain">域名管理</a></li>
+                        <li><a href="/Tool">系统工具</a></li>
+
+                        <li><a href="/UserManage">用户管理</a></li>
+                    }
+                </ul>
+
+                @if (Request.Cookies[UserAuthorizationAttribute.CookieUserName] != null &&
+                         string.IsNullOrWhiteSpace(Request.Cookies[UserAuthorizationAttribute.CookieUserName].Value) == false &&
+                         Session[Session.SessionID] != null)
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> @Request.Cookies[UserAuthorizationAttribute.CookieUserName].Value <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/Profile">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> 个人中心
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/Profile/ChangePassword">
+                                        <span class="glyphicon glyphicon-lock" aria-hidden="true"></span> 修改密码
+                                    </a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="/Home/LoginOut">
+                                        <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 注销登录
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container body-content">
+        <div style="min-height: 720px;">
+            @RenderBody()
+        </div>
+
+        <hr />
+        <footer class="footer text-muted">
+            <p>&copy; @DateTime.Now.Year <a href="#" target="_blank">SmartAnalytics</a> 版权所有</p>
+        </footer>
+
+    </div>
+
+    @Html.Partial("_PartialTongJiCode")
+
+    
+
+</body>
+</html>

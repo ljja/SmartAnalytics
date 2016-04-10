@@ -1,0 +1,75 @@
+﻿
+@using SmartAnalytics.Report.Extendsions
+@model SmartAnalytics.Report.Areas.Flow.Models.PrimaryIndicators
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">关键指标</h3>
+    </div>
+    <table class="table  center">
+        <thead>
+            <tr>
+                <th class="center">
+                    浏览次数(PV)
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-placement="top" data-container="body" title="浏览次数(PV)"
+                          data-content="即通常说的PV（PageView）值，用户每打开1个网站页面，记录1个PV，用户多次打开同一页面PV累计多次。">
+                    </span>
+                </th>
+                <th class="center">
+                    独立访客(UV)
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-placement="top" data-container="body" title="独立访客(UV)"
+                          data-content="1天（00:00-24:00）之内，访问网站的不重复用户数（以浏览器cookie为依据），一天内同一访客多次访问网站只被计算1次。">
+                    </span>
+                </th>
+                <th class="center">
+                    独立访客(IP)
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-placement="top" data-container="body" title="独立访客(IP)"
+                          data-content="1天（00:00-24:00）之内，访问网站的不重复IP数，一天内相同IP地址多次访问网站只被计算1次。">
+                    </span>
+                </th>
+                <th class="center">
+                    新独立访客
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-placement="top" data-container="body" title="新独立访客"
+                          data-content="当日的独立访客中，历史上首次访问网站的访客为新独立访客。">
+                    </span>
+                </th>
+                <th class="center">
+                    访问次数
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-placement="top" data-container="body" title="访问次数"
+                          data-content="访客从进入网站到离开网站的一系列活动记为一次访问，也称会话(session),1次访问(会话)可能包含多个PV, 会话超时30分钟。">
+                    </span>
+                </th>
+                <th class="center">
+                    人均浏览页数
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-placement="top" data-container="body" title="人均浏览页数"
+                          data-content="平均每个独立访客产生的PV，人均浏览页数=浏览次数/独立访客，体现网站对访客的吸引程度。">
+                    </span>
+                </th>
+                <th class="center">
+                    平均访问深度
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-placement="top" data-container="body" title="平均访问深度"
+                          data-content="平均每次访问(会话)产生的PV，平均访问深度=浏览次数/访问次数，体现网站对访客的吸引程度。">
+                    </span>
+                </th>
+                <th class="center">
+                    平均访问时长
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-placement="top" data-container="body" title="平均访问时长"
+                          data-content="平均每次访问(会话)在网站上的停留时间，平均访问时长=访问时长/访问次数，体现网站对访客的吸引程度。">
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.PageView</td>
+                <td>@Model.UniqueUser</td>
+                <td>@Model.UniqueIp</td>
+                <td>@Model.NewUniqueUser</td>
+                <td>@Model.AccessNumber</td>
+                <td>@Model.UserViewPageAverage</td>
+                <td>@Model.ViewPageDeptAverage</td>
+                <td>@Model.ViewPageTimeSpanAverage.ToTimeSpan()</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

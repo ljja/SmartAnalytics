@@ -1,0 +1,43 @@
+﻿
+
+<div class="callout callout-primary">
+    <div class="btn-group" id="tool-list">
+        <a class="btn btn-default btn-group-lg" href="/Flow/TimeSpanByHour?date=@DateTime.Now.ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain" value="@DateTime.Now.ToString("yyyy-MM-dd")">今日</a>
+        <a class="btn btn-default btn-group-lg" href="/Flow/TimeSpanByHour?date=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain" value="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")">昨日</a>
+        <a class="btn btn-default btn-group-lg" href="/Flow/TimeSpanByDay?beginDate=@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")&endDate=@DateTime.Now.ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")-@DateTime.Now.ToString("yyyy-MM-dd")">最近7日</a>
+        <a class="btn btn-default btn-group-lg" href="/Flow/TimeSpanByDay?beginDate=@DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd")&endDate=@DateTime.Now.ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain" value="@DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd")-@DateTime.Now.ToString("yyyy-MM-dd")">最近30日</a>
+
+        <form action="/Flow/TimeSpanByDay" class="form-inline" style="float: left; margin-left: 10px;" method="GET">
+
+            <input type="hidden" id="domain" name="domain" value="@ViewBag.SiteDomain"/>
+
+            <div class="form-group">
+                <label>开始时间：</label>
+                <input type="text" class="form-control datepicker" name="beginDate" placeholder="开始时间" style="width: 100px;" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")">
+            </div>
+            <div class="form-group">
+                <label>结束时间：</label>
+                <input type="text" class="form-control datepicker" name="endDate" placeholder="结束时间" style="width: 100px;" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+            </div>
+            <button type="submit" class="btn btn-default">查询</button>
+        </form>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var currentDate = $('#date').attr('value');
+        var toolButtonList = $('#tool-list a');
+        $.each(toolButtonList, function(k, v) {
+            if ($(v).attr('value') == currentDate) {
+                $(v).removeClass("btn-default").addClass("btn-primary");
+            }
+        });
+
+    });
+
+</script>

@@ -1,0 +1,94 @@
+﻿/*
+  * 基础页面样式
+  * author mr.wangya@qq.com
+  */
+
+body {
+    padding-top: 50px;
+    padding-bottom: 15px;
+    background-image: url(/Content/img/page-bg-black.png);
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding: 15px;
+}
+
+.container {
+    background-color: #ffffff;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.footer {
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 25px;
+}
+
+/*标注样式*/
+.callout {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-left: 3px solid #eee;
+}
+
+.callout-primary {
+    background-color: #f5f5f5;
+    border-color: #428bca;
+}
+
+.callout-success {
+    background-color: #f5f5f5;
+    border-color: #d6e9c6;
+}
+
+.callout-info {
+    background-color: #f5f5f5;
+    border-color: #bce8f1;
+}
+
+.callout-warning {
+    background-color: #f5f5f5;
+    border-color: #ebccd1;
+}
+
+.callout-danger {
+    background-color: #f5f5f5;
+    border-color: #eed3d7;
+}
+
+
+.center {
+    text-align: center;
+}
+
+.panel-more {
+    text-align: right;
+    float: right;
+}

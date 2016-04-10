@@ -1,0 +1,68 @@
+﻿@using SmartAnalytics.Report.Extendsions
+@model SmartAnalytics.Services.Util.PagedResult<SmartAnalytics.Services.Models.UserLocalPageItem>
+        @{
+            ViewBag.Title = "用户轨迹";
+        }
+
+        <input type="hidden" id="date" name="date" value="@ViewBag.Date" />
+        <input type="hidden" id="domain" value="@ViewBag.SiteDomain" />
+
+        <div class="row">
+
+            @Html.Partial("_PartialMenu")
+
+            <div class="col-md-9 ">
+
+                <ol class="breadcrumb">
+                    <li><a href="/">SmartAnalytics</a></li>
+                    <li><a href="/Survey">受访分析</a></li>
+                    <li class="active">用户轨迹</li>
+                </ol>
+
+                <!--网站域名-->
+                @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+                <!--表格栏-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+                    </div>
+
+                    <table class="table table-hover table-striped table-condensed table-bordered center">
+                        <thead>
+                            <tr>
+                                <th class="center">序号</th>
+                                <th class="center" style="width: 100px;">来访时间</th>
+                                <th class="center">访问页面</th>
+                                <th class="center">访客来源</th>
+                                <th class="center" style="width: 100px;">IP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Result.Count; i++)
+                            {
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td>@Model.Result[i].visitTime</td>
+                                    <td style="text-align: left;"><a href="@Model.Result[i].visitPage" target="_blank">@Model.Result[i].visitPage.MaxSubstring(30, "...")</a></td>
+                                    <td style="text-align: left;">
+                                        @if (!Model.Result[i].source.Equals("null"))
+                                        {
+                                            <a href="@Model.Result[i].source" target="_blank">@Model.Result[i].source.MaxSubstring(30, "...")</a>
+                                        }
+                                        
+                                    </td>
+                                    <td>@Model.Result[i].ip</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                   
+                </div>
+                @Html.Partial("_PartialPagingInfo")
+                <div class="alert alert-info" role="alert">
+                    说明：功能说明性内容。
+                </div>
+
+            </div>
+        </div>

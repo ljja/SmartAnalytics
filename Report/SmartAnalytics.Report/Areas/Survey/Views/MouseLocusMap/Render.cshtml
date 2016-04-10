@@ -1,0 +1,113 @@
+﻿@{
+
+    Layout = null;
+    ViewBag.Title = "鼠标轨迹图";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - SmartAnalytics</title>
+
+    <style type="text/css">
+        * {
+            border: 0px;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        .mouseLocusMap {
+            width: auto;
+            height: auto;
+        }
+
+        .box {
+            position: relative;
+            z-index: 0;
+            margin: 0 auto;
+            border: 0px;
+        }
+
+        #drawcanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="box" style="width:@(ViewBag.ScreenWidth)px; height:@(ViewBag.ScreenHeight)px;" >
+
+        <canvas id="drawcanvas" width="@ViewBag.ScreenWidth" height="@ViewBag.ScreenHeight" ></canvas>
+
+        <iframe id="frame" src="@ViewBag.Url" width="@ViewBag.ScreenWidth" height="@ViewBag.ScreenHeight" scrolling="auto"></iframe>
+       
+    </div>
+
+    <script src="/Scripts/jquery-2.1.4.js"></script>
+    <script type="text/javascript">
+
+        $(function() {
+
+            var height = $(window).height() + 'px';
+
+            $('.box').css('height', height);
+
+        });
+
+        var url = "http://tongjiapi.wybi.net/Survey/servlet/MousetrackService?BeginTime=@ViewBag.BeginTime&EndTime=@ViewBag.EndTime&ScreenWidth=@ViewBag.ScreenWidth&ScreenHeight=@ViewBag.ScreenHeight&Url=@ViewBag.UrlEncode";
+
+        $.ajax({
+            type: 'get',
+            async: false,
+            url: url,
+            dataType: 'jsonp',
+            cache: true,
+            contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+            jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(默认为:callback)
+            jsonpCallback: "callBackFun",
+            success: function (data, textStatus) {
+                draw(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.status);
+                console.log(XMLHttpRequest.readyState);
+                console.log(textStatus);
+            }
+        });
+
+
+        function draw(data) {
+
+            var canvas = document.getElementById("drawcanvas");
+            
+          
+           
+            
+            var ctx = canvas.getContext("2d");
+            ctx.strokeStyle = "#0000ff";
+            
+
+            for (var i = 0; i < data.length - 1; i++) {
+
+                ctx.lineTo(data[i].x, data[i].y);
+                
+
+            }
+
+            ctx.stroke();
+
+        }
+    </script>
+
+</body>
+</html>

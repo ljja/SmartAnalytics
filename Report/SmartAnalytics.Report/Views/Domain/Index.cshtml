@@ -1,0 +1,50 @@
+﻿@model SmartAnalytics.Services.Util.PagedResult<SmartAnalytics.Services.Models.DomainPageItem>
+@{
+    ViewBag.Title = "域名管理";
+}
+
+
+<div class="row">
+
+    <div class="col-md-3">
+        @Html.Partial("Shared/_QuickMenu")
+    </div>
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">管理后台</a></li>
+            <li><a href="/Domain">域名管理</a></li>
+            <li class="active">
+                <label class="label label-success">共查询到 @Model.SizeCount 条信息</label>
+            </li>
+        </ol>
+
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>网站域名</th>
+                    <th>网站别名</th>
+                    <th>常用操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Result.Count; i++)
+                {
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@Model.Result[i].SiteDomain </td>
+                        <td>@Model.Result[i].DomainAlias </td>
+                        <td>
+                            <a class="btn btn-danger delete" data-id="@Model.Result[i].Id" href="/Domain/edit?id=@Model.Result[i].Id">编辑</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @Html.Partial("_PartialPagingInfo")
+
+    </div>
+</div>

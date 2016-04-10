@@ -1,0 +1,174 @@
+﻿@using SmartAnalytics.Report.Areas.Flow.Models
+@model List<SmartAnalytics.Services.Models.VisitorResolutionByDayPageItem>
+
+@{
+    ViewBag.Title = "分辨率-系统环境";
+}
+
+<input type="hidden" id="date" name="date" value="@ViewBag.Date" />
+<input type="hidden" id="domain" value="@ViewBag.SiteDomain" />
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Visitor">访客分析</a></li>
+            <li class="active">分辨率-系统环境</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <div class="callout callout-primary">
+            <div class="btn-group" id="tool-list">
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.ToString("yyyy-MM-dd")"
+                   href="/Visitor/Environment/Resolution?date=@DateTime.Now.ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">今日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")"
+                   href="/Visitor/Environment/Resolution?date=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">昨日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")"
+                   href="/Visitor/Environment/Resolution?date=@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">前天</a>
+            </div>
+        </div>
+
+        <!--概况栏-->
+        @Html.Partial("_PartialPrimaryIndicators", @ViewBag.PrimaryIndicators as PrimaryIndicators)
+
+        <!--图表栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计图表(@ViewBag.Date)</h3>
+            </div>
+            <div class="panel-body">
+                <div id="map-pie" style="height: 500px;"></div>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th class="center">分辨率</th>
+                        <th class="center">PV</th>
+                        <th class="center">UV</th>
+                        <th class="center">IP</th>
+                        <th class="center">新访客</th>
+                        <th class="center">新访客比率</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@Model[i].Resolution</td>
+                            <td>@Model[i].PageView</td>
+                            <td>@Model[i].UniqueUser</td>
+                            <td>@Model[i].UniqueIp</td>
+                            <td>@Model[i].NewUniqueUser</td>
+                            <td>@(Model[i].NewUniqueUserRate * 100)%</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="alert alert-info" role="alert">
+                说明：未查询到数据。
+            </div>
+        }
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require.config({
+        paths: {
+            echarts: '/Scripts/ECharts'
+        }
+    });
+    //渲染ECharts
+    function RenderECharts(chartsArea, chartOption) {
+        require([
+        'echarts',
+        'echarts/chart/pie'
+        ], function (ec) {
+            var myChart = ec.init(document.getElementById(chartsArea));
+            myChart.setOption(chartOption);
+        });
+    }
+
+    $(function () {
+
+        $('[data-toggle="popover"]').popover({ animation: true, trigger: 'hover' });
+
+        //获取系统常量
+        var domain = $('#domain').attr('value');
+        var date = $('#date').attr('value');
+
+        //访客分析-系统环境-分辨率
+        TongJiApi.VisitorResolution(date, domain, function (data) {
+
+            //饼图
+            var option = getOption(date, domain, data);
+
+            RenderECharts('map-pie', option);
+
+        });
+
+    });
+
+    function getOption(date, domain, data) {
+
+        //饼图
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b} : {c}<br/>总量占比：{d}%"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: []
+            },
+            calculable: true,
+            series: [
+                {
+                    type: 'pie',
+                    data: []
+                }
+            ]
+        };
+
+        $.each(data, function (k, v) {
+
+            option.legend.data.push(v.Resolution);
+
+            option.series[0].data.push({ value: v.PageView, name: v.Resolution });
+        });
+
+        return option;
+    }
+
+</script>
+
+
+
+

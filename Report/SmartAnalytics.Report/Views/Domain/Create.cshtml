@@ -1,0 +1,54 @@
+﻿@model SmartAnalytics.Report.Models.DomainCreateRequest
+@{
+    ViewBag.Title = "添加域名";
+}
+
+<div class="row">
+
+    <div class="col-md-3">
+        @Html.Partial("Shared/_QuickMenu")
+    </div>
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">管理后台</a></li>
+            <li><a href="/Domain">域名管理</a></li>
+            <li class="active">新建域名</li>
+        </ol>
+
+
+        @using (Html.BeginForm("Create", "Domain", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.SiteDomain, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.SiteDomain, new { @class = "form-control", style = "width: 280px", placeholder = "网站域名" })
+                    @Html.ValidationMessageFor(model => model.SiteDomain)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DomainAlias, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.DomainAlias, new { @class = "form-control", style = "width: 280px", placeholder = "网站别名" })
+                    @Html.ValidationMessageFor(model => model.DomainAlias)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @Html.ValidationSummary(true)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-primary">添加</button>
+                    <a href="/Domain" class="btn btn-default">取消</a>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

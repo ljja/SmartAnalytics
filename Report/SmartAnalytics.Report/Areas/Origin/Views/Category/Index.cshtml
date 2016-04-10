@@ -1,0 +1,253 @@
+﻿@using SmartAnalytics.Report.Areas.Flow.Models
+@model List<SmartAnalytics.Services.Models.CategoryListByDatePageItem>
+
+@{
+    ViewBag.Title = "来源分类";
+}
+
+<input type="hidden" id="date" name="date" value="@ViewBag.Date" />
+<input type="hidden" id="domain" value="@ViewBag.SiteDomain" />
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Origin">来源分析</a></li>
+            <li class="active">来源分类</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <div class="callout callout-primary">
+            <div class="btn-group" id="tool-list">
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.ToString("yyyy-MM-dd")"
+                   href="/Origin/Category?date=@DateTime.Now.ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">今日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")"
+                   href="/Origin/Category?date=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">昨日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")"
+                   href="/Origin/Category?date=@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">前天</a>
+            </div>
+        </div>
+
+        <!--概况栏-->
+        @Html.Partial("_PartialPrimaryIndicators", @ViewBag.PrimaryIndicators as PrimaryIndicators)
+
+        <!--图表栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计图表(@ViewBag.Date)</h3>
+            </div>
+            <div class="panel-body">
+                <div id="map-OriginCategory-Left" style="height: 300px; border-bottom: 1px solid #ddd;"></div>
+                <div id="map-OriginCategory-Right" style="height: 300px;"></div>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">来源分类</th>
+                        <th class="center">来访次数</th>
+                        <th class="center">PV</th>
+                        <th class="center">UV</th>
+                        <th class="center">IP</th>
+                        <th class="center">新访客</th>
+                        <th class="center">新访客比率</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td style="text-align: left;">(@Model[i].IndustryCode)@Model[i].IndustryCodeName</td>
+                            <td>@Model[i].TotalNumber</td>
+                            <td>@Model[i].PageView</td>
+                            <td>@Model[i].UniqueUser</td>
+                            <td>@Model[i].UniqueIp</td>
+                            <td>@Model[i].NewUniqueUser</td>
+                            <td>@(Model[i].NewUniqueUserRate*100)%</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：功能说明性内容。
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    require.config({
+        paths: {
+            echarts: '/Scripts/ECharts'
+        }
+    });
+    //渲染ECharts
+    function RenderECharts(chartsArea, chartOption) {
+        require([
+        'echarts',
+        'echarts/chart/line',
+        'echarts/chart/pie'
+        ], function (ec) {
+            var myChart = ec.init(document.getElementById(chartsArea));
+            myChart.setOption(chartOption);
+        });
+    }
+
+    $(function () {
+
+        $('[data-toggle="popover"]').popover({ animation: true, trigger: 'hover' });
+
+        //获取系统常量
+        var domain = $('#domain').attr('value');
+        var date = $('#date').attr('value');
+
+
+        //来源分析-来源分类-按小时和来源分类统计
+        TongJiApi.OriginCategoryHour(date, domain, '', function (data) {
+
+            //折线图
+            var option = getOptionLeft(date, domain, data);
+
+            RenderECharts('map-OriginCategory-Left', option);
+
+        });
+
+        //来源分析-来源分类-按日和来源分类统计
+        TongJiApi.OriginCategoryDay(date, domain, '', function (data) {
+
+            //饼图
+            var option = getOptionRight(date, domain, data);
+
+            RenderECharts('map-OriginCategory-Right', option);
+
+        });
+
+    });
+
+    function getOptionLeft(day, domain, data) {
+        //折线图
+        var option = {
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    var tip = '';
+                    if (params.length > 0) {
+                        var hour = parseInt(params[0].name);
+                        var prefix = '';
+                        if (hour > 0 && hour < 05) {
+                            prefix = '凌晨';
+                        } else if (hour >= 05 && hour < 08) {
+                            prefix = '早上';
+                        } else if (hour >= 08 && hour < 12) {
+                            prefix = '上午';
+                        } else if (hour >= 12 && hour < 13) {
+                            prefix = '中午';
+                        } else if (hour >= 13 && hour < 18) {
+                            prefix = '下午';
+                        } else if (hour >= 18 && hour < 20) {
+                            prefix = '傍晚';
+                        } else if (hour >= 20) {
+                            prefix = '夜晚';
+                        }
+                        tip += prefix + params[0].name + '时<br />';
+                    }
+                    for (var i = 0; i < params.length; i++) {
+                        tip += params[i].seriesName + '：' + params[i].value + '<br />';
+                    }
+                    return tip;
+                }
+            },
+            legend: {
+                data: []
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    name: '时段',
+                    boundaryGap: false,
+                    data: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
+                }
+            ],
+            yAxis: [
+                {
+                    name: '数量',
+                    type: 'value'
+                }
+            ],
+            series: []
+        };
+
+        $.each(data, function (k, v) {
+
+            var legendName = '(' + v.IndustryCode + ')' + v.IndustryCodeName;
+
+            option.legend.data.push(legendName);
+
+            option.series.push({
+                name: legendName,
+                type: 'line',
+                data: v.Data
+            });
+
+        });
+
+        return option;
+    }
+
+    function getOptionRight(day, domain, data) {
+
+        //饼图
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b} : {c}<br/>总量占比：{d}%"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: []
+            },
+            calculable: true,
+            series: [
+                {
+                    name: '来源分类',
+                    type: 'pie',
+                    center: ['60%', '55%'],
+                    data: []
+                }
+            ]
+        };
+
+        $.each(data, function (k, v) {
+            var legendName = '(' + v.IndustryCode + ')' + v.IndustryCodeName;
+
+            option.legend.data.push(legendName);
+
+            option.series[0].data.push({ value: v.TotalNumber, name: legendName });
+        });
+
+        return option;
+    }
+
+</script>

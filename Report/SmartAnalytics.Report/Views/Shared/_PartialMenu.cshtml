@@ -1,0 +1,131 @@
+﻿
+<div class="col-md-3" id="menu-left">
+
+    <div class="list-group">
+        <a href="#" class="list-group-item disabled">流量分析</a>
+
+        <a href="/Flow/TimeSpanByHour?date=@DateTime.Now.ToString("yyyy-MM-dd")" class="list-group-item" title="今日统计">
+            <span class="glyphicon glyphicon-signal"></span> 今日统计
+        </a>
+
+        <a href="/Flow/TimeSpanByHour?date=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")" class="list-group-item" title="昨日统计">
+            <span class="glyphicon glyphicon-signal"></span> 昨日统计
+        </a>
+
+        <a href="/Flow/RealTime" class="list-group-item" title="实时访客">
+            <span class="glyphicon glyphicon-signal"></span> 实时访客
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Flow/Predict" class="list-group-item" title="流量趋势">
+            <span class="glyphicon glyphicon-signal"></span> 流量趋势
+            <span class="badge"></span>
+        </a>
+
+    </div>
+
+    <div class="list-group">
+        <a href="#" class="list-group-item disabled">来源分析</a>
+
+        <a href="/Origin/Category" class="list-group-item" title="来源分类">
+            <span class="glyphicon glyphicon-signal"></span> 来源分类
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Origin/SearchEngine" class="list-group-item" title="搜索引擎">
+            <span class="glyphicon glyphicon-signal"></span> 搜索引擎
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Origin/SearchWord" class="list-group-item" title="搜索词">
+            <span class="glyphicon glyphicon-signal"></span> 搜索词
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Origin/OriginDomain" class="list-group-item" title="来源域名">
+            <span class="glyphicon glyphicon-signal"></span> 来源域名
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Origin/OriginPage" class="list-group-item" title="来源页面">
+            <span class="glyphicon glyphicon-signal"></span> 来源页面
+            <span class="badge"></span>
+        </a>
+
+        <a href="#" class="list-group-item" title="SEO推荐">
+            <span class="glyphicon glyphicon-signal"></span> SEO推荐
+            <span class="badge">保留</span>
+        </a>
+    </div>
+
+    <div class="list-group dropup">
+        <a href="#" class="list-group-item disabled">访客分析</a>
+
+        <a href="/Visitor/Region" class="list-group-item" title="地域分布">
+            <span class="glyphicon glyphicon-signal"></span> 地域分布
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Visitor/Environment" class="list-group-item" title="系统环境">
+            <span class="glyphicon glyphicon-signal"></span> 系统环境
+            <span class="badge"></span>
+        </a>
+        <a href="/Visitor/NewOldVisitor" class="list-group-item" title="新老访客">
+            <span class="glyphicon glyphicon-signal"></span> 新老访客
+            <span class="badge"></span>
+        </a>
+        <a href="/Visitor/Loyalty" class="list-group-item" title="忠诚度">
+            <span class="glyphicon glyphicon-signal"></span> 忠诚度
+            <span class="badge"></span>
+        </a>
+        <a href="/Visitor/ActivityDegree" class="list-group-item" title="活跃度">
+            <span class="glyphicon glyphicon-signal"></span> 活跃度
+            <span class="badge"></span>
+        </a>
+        <a href="#" class="list-group-item" title="访客属性">
+            <span class="glyphicon glyphicon-signal"></span> 访客属性
+            <span class="badge">保留</span>
+        </a>
+    </div>
+
+    <div class="list-group">
+        <a href="#" class="list-group-item disabled">受访分析</a>
+
+        <a href="/Survey/HeatMap" class="list-group-item" title="热力图">
+            <span class="glyphicon glyphicon-signal"></span> 热力图
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Survey/MouseLocusMap" class="list-group-item" title="鼠标轨迹">
+            <span class="glyphicon glyphicon-signal"></span> 鼠标轨迹
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Survey/SurveyDomain" class="list-group-item" title="受访域名">
+            <span class="glyphicon glyphicon-signal"></span> 受访域名
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Survey/SurveyPage" class="list-group-item" title="受访页面">
+            <span class="glyphicon glyphicon-signal"></span> 受访页面
+            <span class="badge"></span>
+        </a>
+        
+        <a href="/Survey/UserLocus" class="list-group-item" title="用户轨迹">
+            <span class="glyphicon glyphicon-signal"></span> 用户轨迹
+            <span class="badge"></span>
+        </a>
+
+        <a href="/Survey/UserViewPoint" class="list-group-item" title="用户视点">
+            <span class="glyphicon glyphicon-signal"></span> 用户视点
+            <span class="badge">保留</span>
+        </a>
+
+        <a href="/Survey/ChannelFlow" class="list-group-item" title="页面上下游">
+            <span class="glyphicon glyphicon-signal"></span> 页面上下游
+            <span class="badge">保留</span>
+        </a>
+
+    </div>
+
+</div>

@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "用户视点";
+}
+
+<input type="hidden" id="date" name="date" value="@ViewBag.Date" />
+<input type="hidden" id="domain" value="@ViewBag.SiteDomain" />
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Survey">受访分析</a></li>
+            <li class="active">用户视点</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：功能说明性内容。
+        </div>
+
+    </div>
+</div>

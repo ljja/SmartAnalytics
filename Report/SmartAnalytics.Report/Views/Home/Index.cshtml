@@ -1,0 +1,208 @@
+﻿@{
+    ViewBag.Title = "统计概况";
+}
+
+<div class="row">
+    
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li class="active">统计概况</li>
+        </ol>
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">项目进度</h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    流量趋势
+                    <a class="panel-more" href="#">更多</a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                Panel content
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    今日统计
+                    <a class="panel-more" href="#">更多</a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                Panel content
+            </div>
+        </div>
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    昨日统计
+                    <a class="panel-more" href="#">更多</a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div id="map-test" style="width: 100%; height: 300px;"></div>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                <tr>
+                    <th class="center">日期</th>
+                    <th class="center">域名</th>
+                    <th class="center">PV</th>
+                    <th class="center">UV</th>
+                    <th class="center">IP</th>
+                    <th class="center">新访客</th>
+                    <th class="center">新访客比率</th>
+                    <th class="center">人均浏览页数</th>
+                    <th class="center">平均访问深度</th>
+                    <th class="center">平均访问时长</th>
+                    <th class="center">跳出率</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>2015-06-08</td>
+                    <td>88mf.com</td>
+                    <td>8805</td>
+                    <td>9630</td>
+                    <td>3651</td>
+                    <td>2356</td>
+                    <td>35%</td>
+                    <td>17</td>
+                    <td>20</td>
+                    <td>1'23''</td>
+                    <td>10%</td>
+                </tr>
+
+                <tr>
+                    <td>2015-06-08</td>
+                    <td>87mf.com</td>
+                    <td>8805</td>
+                    <td>9630</td>
+                    <td>3651</td>
+                    <td>2356</td>
+                    <td>35%</td>
+                    <td>17</td>
+                    <td>20</td>
+                    <td>1'23''</td>
+                    <td>10%</td>
+                </tr>
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    require.config({
+        paths: {
+            echarts: './Scripts/ECharts'
+        }
+    });
+
+    require([
+        'echarts',
+        'echarts/chart/line',
+        'echarts/chart/bar'
+    ],function(ec) {
+        var myChart = ec.init(document.getElementById('map-test'));
+        var option = {
+            title: {
+                text: '昨日统计',
+                subtext: '88mf.com'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['浏览页数', '访客总数']
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '浏览页数',
+                    type: 'line',
+                    data: [11, 11, 15, 13, 12, 13, 10],
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            { type: 'average', name: '平均值' }
+                        ]
+                    }
+                },
+                {
+                    name: '访客总数',
+                    type: 'line',
+                    data: [1, -2, 2, 5, 3, 2, 0],
+                    markPoint: {
+                        data: [
+                            { name: '周最低', value: -2, xAxis: 1, yAxis: -1.5 }
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            { type: 'average', name: '平均值' }
+                        ]
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    });
+
+</script>

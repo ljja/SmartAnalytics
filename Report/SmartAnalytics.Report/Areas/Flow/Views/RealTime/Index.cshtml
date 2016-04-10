@@ -1,0 +1,202 @@
+﻿@using SmartAnalytics.Report.Areas.Flow.Models
+@{
+    ViewBag.Title = "实时访客";
+}
+
+<input type="hidden" id="sitedomain" value="@ViewBag.SiteDomain"/>
+<input type="hidden" id="minute" value="@ViewBag.Minute" />
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Flow">流量分析</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <!--概况栏-->
+        @Html.Partial("_PartialPrimaryIndicators", @ViewBag.PrimaryIndicators as PrimaryIndicators)
+
+        <!--图表栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计图表 - 最近 @ViewBag.Minute 分钟 </h3>
+            </div>
+            <div class="panel-body">
+                <div id="map-TimeSpanByMinute" style="height: 300px;"></div>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">实时访客 - 最近 @ViewBag.Minute 分钟</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 100px;">来访时间</th>
+                        <th class="center">访问页面</th>
+                        <th class="center">访客来源</th>
+                        <th class="center" style="width: 100px;">IP</th>
+                    </tr>
+                </thead>
+                <tbody id="data-list">
+                    <tr></tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：实时数据刷新中...
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="/Scripts/jquery.signalR-2.2.0.js"></script>
+<script type="text/javascript" src="/signalr/hubs"></script>
+<script type="text/javascript">
+
+    require.config({
+        paths: {
+            echarts: '/Scripts/ECharts'
+        }
+    });
+    //渲染ECharts
+    function RenderECharts(chartsArea, chartOption) {
+        require([
+        'echarts',
+        'echarts/chart/line',
+        'echarts/chart/bar'
+        ], function (ec) {
+            var myChart = ec.init(document.getElementById(chartsArea));
+            myChart.setOption(chartOption);
+        });
+    }
+
+    $(function () {
+
+        var fm = $.connection.fmHub;
+        var sitedomain = $('#sitedomain').attr('value');
+        var container = $('#data-list');
+
+        if (fm) {
+            fm.client.Message = function (data) {
+                if (data.domain == sitedomain) {
+                    append(container, data);
+                }
+            }
+            fm.connection.start();
+        }
+
+        function append(container, data) {
+
+            var url = data.url;
+            if (data.url.length > 50) {
+                url = data.url.substring(0, 50);
+            }
+
+            var referrer = data.referrer;
+            if (data.referrer.length > 30) {
+                referrer = data.referrer.substring(0, 30);
+            }
+
+            var html = '<tr><td>' + data.timestamp + '</td><td style="text-align: left;"><a target="_blank" href="' + data.url + '" title="' + data.url + '">' + url + '</a></td><td  style="text-align: left;"><a target="_blank" href="' + data.referrer + '" title="' + data.referrer + '">' + referrer + '</a></td><td>' + data.userip + '</td></tr>';
+
+            $(container).children().before(html);
+
+            var length = $(container).children().length;
+
+            if (length > 100) {
+                $(container).empty().append("<tr></tr>");
+            }
+
+        }
+        
+        //EChart
+        var domain = $('#sitedomain').attr('value');
+        var minute = $('#minute').attr('value');
+
+        TongJiApi.TimeSpanByMinute(domain, minute, function (data) {
+
+            var option = getOption(domain, minute, data);
+
+            RenderECharts('map-TimeSpanByMinute', option);
+
+        });
+
+    });
+
+
+    function getOption(domain, minute, data) {
+
+        var option = {
+            title: {
+                text: '最近' + minute + '分钟',
+                subtext: domain
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['浏览次数PV', '独立访客UV', '独立访客IP']
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    name: '时间',
+                    boundaryGap: false,
+                    data: []
+                }
+            ],
+            yAxis: [
+                {
+                    name: '数量',
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '浏览次数PV',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '独立访客UV',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '独立访客IP',
+                    type: 'line',
+                    data: []
+                }
+            ]
+        };
+
+        $.each(data, function (k, v) {
+            option.series[0].data.push(v.PageView);
+            option.series[1].data.push(v.UniqueUser);
+            option.series[2].data.push(v.UniqueIp);
+
+            var dateStr = '' + v.TotalHour + '时' + v.TotalMinute + '分';
+            option.xAxis[0].data.push(dateStr);
+        });
+
+        return option;
+    }
+
+
+
+</script>

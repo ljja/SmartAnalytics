@@ -1,0 +1,83 @@
+﻿@model SmartAnalytics.Services.Util.PagedResult<SmartAnalytics.Services.Models.UrlMapPageItem>
+@{
+    ViewBag.Title = "鼠标轨迹";
+}
+
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Survey">受访分析</a></li>
+            <li class="active">鼠标轨迹</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading" style="height: 38px;">
+                <span class="panel-title" style="float: left;">网址列表</span>
+                <a href="#" style="float: right">添加网址</a>
+            </div>
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th class="center">名称</th>
+                        <th class="center">网址</th>
+                        <th class="center">鼠标轨迹</th>
+                        <th class="center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (var i = 0; i < Model.Result.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@Model.Result[i].UrlTitle </td>
+                            <td>
+                                <a href="@Model.Result[i].UrlAddress" target="_blank">@Model.Result[i].UrlAddress</a>
+                            </td>
+                            <td>
+                                <a href="#" target="_blank" class="mouseLocusMap" data-url="@Model.Result[i].UrlAddress">点击查看</a>
+                            </td>
+                            <td>
+                                <a href="#">编辑</a> | <a href="#">删除</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+
+        @Html.Partial("_PartialPagingInfo")
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        var width = window.screen.width;
+        var height = window.screen.height;
+
+        $('.mouseLocusMap').click(function () {
+            var url = '/Survey/MouseLocusMap/Render?url=' + $(this).attr('data-url') + '&beginTime=' + '&endTime=' + '&screenWidth=' + 1920 + '&screenHeight=' + 1080;
+            var frameParam = 'height=' + height + ',width=' + width;
+            window.open(url, 'heatmap', frameParam);
+            return false;
+        });
+
+    })
+
+</script>

@@ -1,0 +1,136 @@
+﻿@using SmartAnalytics.Report.Areas.Flow.Models
+
+@{
+    ViewBag.Title = "系统环境";
+}
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Visitor">访客分析</a></li>
+            <li class="active">系统环境</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <div class="callout callout-primary">
+            <div class="btn-group" id="tool-list">
+                <a class="btn btn-default btn-group-lg" href="/Visitor/Environment?date=@DateTime.Now.ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">今日</a>
+                <a class="btn btn-default btn-group-lg" href="/Visitor/Environment?date=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">昨日</a>
+                <a class="btn btn-default btn-group-lg" href="/Visitor/Environment?date=@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">前天</a>
+            </div>
+        </div>
+
+        <!--概况栏-->
+        @Html.Partial("_PartialPrimaryIndicators", @ViewBag.PrimaryIndicators as PrimaryIndicators)
+
+        <!--图表栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计图表(@ViewBag.Date)</h3>
+            </div>
+            <div class="panel-body">
+                <div id="map-pie" style="height: 300px;"></div>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th class="center">操作系统</th>
+                        <th class="center">PV</th>
+                        <th class="center">UV</th>
+                        <th class="center">IP</th>
+                        <th class="center">新访客</th>
+                        <th class="center">新访客比率</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：功能说明性内容。
+        </div>
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    require.config({
+        paths: {
+            echarts: '/Scripts/ECharts'
+        }
+    });
+    //渲染ECharts
+    function RenderECharts(chartsArea, chartOption) {
+        require([
+        'echarts',
+        'echarts/chart/pie'
+        ], function (ec) {
+            var myChart = ec.init(document.getElementById(chartsArea));
+            myChart.setOption(chartOption);
+        });
+    }
+
+    $(function () {
+
+        $('[data-toggle="popover"]').popover({ animation: true, trigger: 'hover' });
+
+        //获取系统常量
+        var domain = $('#domain').attr('value');
+        var date = $('#date').attr('value');
+
+        //饼图
+        var option = getOption();
+
+        RenderECharts('map-pie', option);
+
+    });
+
+    function getOption() {
+
+        //饼图
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b} : {c}<br/>总量占比：{d}%"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['Android', 'IOS', 'Mobile']
+            },
+            calculable: true,
+            series: [
+                {
+                    type: 'pie',
+                    data: [{ name: 'Android', value: 60 }, { name: 'IOS', value: 15 }, { name: 'Mobile', value: 100 }]
+                }
+            ]
+        };
+
+
+        return option;
+    }
+
+</script>
+
+

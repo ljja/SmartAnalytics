@@ -1,0 +1,77 @@
+﻿@model List<SmartAnalytics.Services.Models.SurveyPageByDayPageItem>
+@{
+    ViewBag.Title = "受访页面";
+}
+
+<input type="hidden" id="date" name="date" value="@ViewBag.Date" />
+<input type="hidden" id="domain" value="@ViewBag.SiteDomain" />
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Survey">受访分析</a></li>
+            <li class="active">受访页面</li>
+        </ol>
+        
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <!--工具栏-->
+        <div class="callout callout-primary">
+            <div class="btn-group" id="tool-list">
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.ToString("yyyy-MM-dd")"
+                   href="/Survey/SurveyPage?date=@DateTime.Now.ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">今日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")"
+                   href="/Survey/SurveyPage?date=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") & domain = @ViewBag.SiteDomain">昨日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")"
+                   href="/Survey/SurveyPage?date=@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd") & domain = @ViewBag.SiteDomain">前天</a>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th class="center">受访页面</th>
+                        <th class="center">浏览次数PV</th>
+                        <th class="center">独立访客UV</th>
+                        <th class="center">独立访客IP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@Model[i].Url</td>
+                            <td>@Model[i].PageView</td>
+                            <td>@Model[i].UniqueUser</td>
+                            <td>@Model[i].UniqueIp</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：功能说明性内容。
+        </div>
+
+    </div>
+</div>
+

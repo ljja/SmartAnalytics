@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{53B9FC13-F41B-41E9-B06A-D54FD8200DD9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartAnalytics.Entities</RootNamespace>
+    <AssemblyName>SmartAnalytics.Entities</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Browse.cs" />
+    <Compile Include="CityAreaCode.cs" />
+    <Compile Include="Domain.cs" />
+    <Compile Include="FlowVolumeByDay.cs" />
+    <Compile Include="FlowVolumeByHour.cs" />
+    <Compile Include="FlowVolumeByMinute.cs" />
+    <Compile Include="IndustryCode.cs" />
+    <Compile Include="InitData.cs" />
+    <Compile Include="IpAddressArea.cs" />
+    <Compile Include="Migrations\201506120713174_InitialCreate.cs" />
+    <Compile Include="Migrations\201506120713174_InitialCreate.Designer.cs">
+      <DependentUpon>201506120713174_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507070321078_AddPredictFlowVolumeByHourTable.cs" />
+    <Compile Include="Migrations\201507070321078_AddPredictFlowVolumeByHourTable.Designer.cs">
+      <DependentUpon>201507070321078_AddPredictFlowVolumeByHourTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507080259445_AddFlowVolumeByMinuteTable.cs" />
+    <Compile Include="Migrations\201507080259445_AddFlowVolumeByMinuteTable.Designer.cs">
+      <DependentUpon>201507080259445_AddFlowVolumeByMinuteTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507130233590_AddCityAreaCodeTable.cs" />
+    <Compile Include="Migrations\201507130233590_AddCityAreaCodeTable.Designer.cs">
+      <DependentUpon>201507130233590_AddCityAreaCodeTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507130735374_AddOriginCategoryTable.cs" />
+    <Compile Include="Migrations\201507130735374_AddOriginCategoryTable.Designer.cs">
+      <DependentUpon>201507130735374_AddOriginCategoryTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507140955360_AddParentCodeField.cs" />
+    <Compile Include="Migrations\201507140955360_AddParentCodeField.Designer.cs">
+      <DependentUpon>201507140955360_AddParentCodeField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507151018553_AddOriginWordTable.cs" />
+    <Compile Include="Migrations\201507151018553_AddOriginWordTable.Designer.cs">
+      <DependentUpon>201507151018553_AddOriginWordTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507160257535_AddTotalCountField.cs" />
+    <Compile Include="Migrations\201507160257535_AddTotalCountField.Designer.cs">
+      <DependentUpon>201507160257535_AddTotalCountField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507230836166_AddVisitorTable.cs" />
+    <Compile Include="Migrations\201507230836166_AddVisitorTable.Designer.cs">
+      <DependentUpon>201507230836166_AddVisitorTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507270310413_AddVisitorActiveTable.cs" />
+    <Compile Include="Migrations\201507270310413_AddVisitorActiveTable.Designer.cs">
+      <DependentUpon>201507270310413_AddVisitorActiveTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507280922406_AddUrlMapTable.cs" />
+    <Compile Include="Migrations\201507280922406_AddUrlMapTable.Designer.cs">
+      <DependentUpon>201507280922406_AddUrlMapTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508180453561_AddSurveyPageTable.cs" />
+    <Compile Include="Migrations\201508180453561_AddSurveyPageTable.Designer.cs">
+      <DependentUpon>201508180453561_AddSurveyPageTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="OriginCategory.cs" />
+    <Compile Include="OriginPage.cs" />
+    <Compile Include="OriginWord.cs" />
+    <Compile Include="PredictFlowVolumeByHour.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportDbContext.cs" />
+    <Compile Include="SiteCategory.cs" />
+    <Compile Include="SurveyDomain.cs" />
+    <Compile Include="SurveyPage.cs" />
+    <Compile Include="UrlMap.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="VisitorActive.cs" />
+    <Compile Include="VisitorBrowse.cs" />
+    <Compile Include="VisitorBrowseKernel.cs" />
+    <Compile Include="VisitorLanguage.cs" />
+    <Compile Include="VisitorLoyalty.cs" />
+    <Compile Include="VisitorNewOld.cs" />
+    <Compile Include="VisitorOperatingSystem.cs" />
+    <Compile Include="VisitorRegion.cs" />
+    <Compile Include="VisitorResolution.cs" />
+    <Compile Include="VisitorTerminal.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201506120713174_InitialCreate.resx">
+      <DependentUpon>201506120713174_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507070321078_AddPredictFlowVolumeByHourTable.resx">
+      <DependentUpon>201507070321078_AddPredictFlowVolumeByHourTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507080259445_AddFlowVolumeByMinuteTable.resx">
+      <DependentUpon>201507080259445_AddFlowVolumeByMinuteTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507130233590_AddCityAreaCodeTable.resx">
+      <DependentUpon>201507130233590_AddCityAreaCodeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507130735374_AddOriginCategoryTable.resx">
+      <DependentUpon>201507130735374_AddOriginCategoryTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507140955360_AddParentCodeField.resx">
+      <DependentUpon>201507140955360_AddParentCodeField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507151018553_AddOriginWordTable.resx">
+      <DependentUpon>201507151018553_AddOriginWordTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507160257535_AddTotalCountField.resx">
+      <DependentUpon>201507160257535_AddTotalCountField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507230836166_AddVisitorTable.resx">
+      <DependentUpon>201507230836166_AddVisitorTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507270310413_AddVisitorActiveTable.resx">
+      <DependentUpon>201507270310413_AddVisitorActiveTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507280922406_AddUrlMapTable.resx">
+      <DependentUpon>201507280922406_AddUrlMapTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508180453561_AddSurveyPageTable.resx">
+      <DependentUpon>201508180453561_AddSurveyPageTable.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

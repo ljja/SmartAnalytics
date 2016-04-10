@@ -1,0 +1,59 @@
+﻿@using SmartAnalytics.Report.Filters
+@{
+    ViewBag.Title = "个人中心";
+}
+
+
+<div class="row">
+
+    <div class="col-md-3">
+
+        @Html.Partial("Shared/_QuickMenu")
+
+    </div>
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">管理后台</a></li>
+            <li><a href="/Profile">个人中心</a></li>
+            <li class="active">个人资料</li>
+        </ol>
+
+        <div class="container" style="width: 600px;">
+
+            <form class="form-horizontal" role="form">
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">当前账号</label>
+                    <div class="col-md-10">
+                        <p class="form-control-static">
+                            @Request.Cookies[UserAuthorizationAttribute.CookieUserName].Value
+                        </p>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <pre class="prettyprint linenums">
+&lt;script type="text/javascript" &gt;
+    var _wyma = _wyma || [];
+    _wyma.push(['_setAccount', '87927395']);
+    _wyma.push(['_trackPageview']);
+    _wyma.push(['_trackSubmit']);
+    _wyma.push(['_trackClick']);
+    _wyma.push(['_trackMover']);
+    (function () {
+      var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
+      ma.src = ('https:' == document.location.protocol ? 'https://a' : 'http://a') + '.wybi.net/ta.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
+    })();
+&lt;/script&gt;
+        </pre>
+
+        <div class="alert alert-warning">
+            获取最佳体验效果，请升级您的<b><a href="https://www.google.com/intl/zh-CN/chrome/browser/" target="_blank">Google Chrome 简体中文</a></b>浏览器至最新版本。
+        </div>
+    </div>
+</div>

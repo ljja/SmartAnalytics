@@ -1,0 +1,162 @@
+﻿@model List<SmartAnalytics.Services.Models.SurveyDomainByDayPageItem>
+@{
+    ViewBag.Title = "受访域名";
+}
+
+<input type="hidden" id="date" name="date" value="@ViewBag.Date" />
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Survey">受访分析</a></li>
+            <li class="active">受访域名</li>
+        </ol>
+
+        <!--工具栏-->
+        <div class="callout callout-primary">
+            <div class="btn-group" id="tool-list">
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.ToString("yyyy-MM-dd")"
+                   href="/Survey/SurveyDomain?date=@DateTime.Now.ToString("yyyy-MM-dd")">今日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")"
+                   href="/Survey/SurveyDomain?date=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")">昨日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")"
+                   href="/Survey/SurveyDomain?date=@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")">前天</a>
+            </div>
+        </div>
+
+        <!--图表栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计图表(@ViewBag.Date)</h3>
+            </div>
+            <div class="panel-body">
+                <div id="map-SurveyDomain" style="height: 300px;"></div>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th class="center">受访域名</th>
+                        <th class="center">浏览次数PV</th>
+                        <th class="center">独立访客UV</th>
+                        <th class="center">独立访客IP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i+1)</td>
+                            <td>@Model[i].SiteDomain</td>
+                            <td>@Model[i].PageView</td>
+                            <td>@Model[i].UniqueUser</td>
+                            <td>@Model[i].UniqueIp</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：功能说明性内容。
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require.config({
+        paths: {
+            echarts: '/Scripts/ECharts'
+        }
+    });
+    //渲染ECharts
+    function RenderECharts(chartsArea, chartOption) {
+        require([
+        'echarts',
+        'echarts/chart/line'
+        ], function (ec) {
+            var myChart = ec.init(document.getElementById(chartsArea));
+            myChart.setOption(chartOption);
+        });
+    }
+
+    $(function () {
+
+        $('[data-toggle="popover"]').popover({ animation: true, trigger: 'hover' });
+
+        //获取系统常量
+        var date = $('#date').attr('value');
+
+        //受访分析-受访域名
+        TongJiApi.SurveyDomainByHour(date, function (data) {
+
+            //折线图
+            var option = getOption(data);
+
+            RenderECharts('map-SurveyDomain', option);
+
+        });
+
+    });
+
+    function getOption(data) {
+        //折线图
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: []
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    name: '时段',
+                    boundaryGap: false,
+                    data: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
+                }
+            ],
+            yAxis: [
+                {
+                    name: '数量',
+                    type: 'value'
+                }
+            ],
+            series: []
+        };
+
+        $.each(data, function (k, v) {
+
+            option.legend.data.push(v.SiteDomain);
+
+            option.series.push({
+                name: v.SiteDomain,
+                type: 'line',
+                data: v.Data
+            });
+
+        });
+
+        return option;
+    }
+
+</script>

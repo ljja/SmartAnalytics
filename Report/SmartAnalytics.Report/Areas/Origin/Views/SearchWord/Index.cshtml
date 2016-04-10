@@ -1,0 +1,77 @@
+﻿@model List<SmartAnalytics.Services.Models.OriginWordPageItem>
+
+@{
+    ViewBag.Title = "搜索词";
+}
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Origin">来源分析</a></li>
+            <li class="active">搜索词</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <div class="callout callout-primary">
+            <div class="btn-group" id="tool-list">
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.ToString("yyyy-MM-dd")"
+                   href="/Origin/SearchWord?date=@DateTime.Now.ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">今日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")"
+                   href="/Origin/SearchWord?date=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">昨日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")"
+                   href="/Origin/SearchWord?date=@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">前天</a>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th class="center">搜索词</th>
+                        <th class="center">来访次数</th>
+                        <th class="center">百度</th>
+                        <th class="center">360搜索</th>
+                        <th class="center">搜狗</th>
+                        <th class="center">谷歌</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i+1)</td>
+                            <td style="text-align: left;">@Model[i].WordText</td>
+                            <td>@Model[i].TotalCount</td>
+                            <td>@Model[i].BaiDuTotalCount</td>
+                            <td>@Model[i].HaoSouTotalCount</td>
+                            <td>@Model[i].SouGouTotalCount</td>
+                            <td>@Model[i].GoogleTotalCount</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：功能说明性内容。
+        </div>
+
+    </div>
+</div>

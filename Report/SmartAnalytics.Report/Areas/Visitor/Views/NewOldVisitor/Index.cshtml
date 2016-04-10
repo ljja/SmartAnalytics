@@ -1,0 +1,192 @@
+﻿@model List<SmartAnalytics.Services.Models.VisitorNewOldByDayPageItem>
+
+@{
+    ViewBag.Title = "新老访客";
+}
+
+<input type="hidden" id="date" name="date" value="@ViewBag.Date" />
+<input type="hidden" id="domain" value="@ViewBag.SiteDomain" />
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Visitor">访客分析</a></li>
+            <li class="active">新老访客</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <div class="callout callout-primary">
+            <div class="btn-group" id="tool-list">
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.ToString("yyyy-MM-dd")"
+                   href="/Visitor/NewOldVisitor?date=@DateTime.Now.ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">今日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")"
+                   href="/Visitor/NewOldVisitor?date=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">昨日</a>
+
+                <a class="btn btn-default btn-group-lg" data-date="@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")"
+                   href="/Visitor/NewOldVisitor?date=@DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd")&domain=@ViewBag.SiteDomain">前天</a>
+            </div>
+        </div>
+
+        <!--图表栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计图表(@ViewBag.Date)</h3>
+            </div>
+            <div class="panel-body">
+                <div id="map-pie" style="height: 300px;"></div>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表(@ViewBag.Date)</h3>
+            </div>
+
+            <table class="table table-hover table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">新访客</th>
+                        <th class="center">关键指标</th>
+                        <th class="center">老访客</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model.Count >= 2)
+                    {
+                        var newVisitor = Model.FirstOrDefault(p => p.IsNewVisitor);
+                        var oldVisitor = Model.FirstOrDefault(p => p.IsNewVisitor == false);
+
+                        if (newVisitor != null && oldVisitor != null)
+                        {
+                            <tr>
+                                <td>@newVisitor.PageView</td>
+                                <td class="center">浏览次数</td>
+                                <td>@oldVisitor.PageView</td>
+                            </tr>
+                            <tr>
+                                <td>@newVisitor.UniqueUser</td>
+                                <td class="center">独立访客</td>
+                                <td>@oldVisitor.UniqueUser</td>
+                            </tr>
+                            <tr>
+                                <td>@newVisitor.AccessNumber</td>
+                                <td class="center">访问次数</td>
+                                <td>@oldVisitor.AccessNumber</td>
+                            </tr>
+                            <tr>
+                                <td>@newVisitor.UserViewPageAverage</td>
+                                <td class="center">人均浏览页数</td>
+                                <td>@oldVisitor.UserViewPageAverage</td>
+                            </tr>
+                            <tr>
+                                <td>@newVisitor.ViewPageDeptAverage</td>
+                                <td class="center">平均访问深度</td>
+                                <td>@oldVisitor.ViewPageDeptAverage</td>
+                            </tr>
+                            <tr>
+                                <td>@newVisitor.ViewPageTimeSpanAverage</td>
+                                <td class="center">平均访问时长</td>
+                                <td>@oldVisitor.ViewPageTimeSpanAverage</td>
+                            </tr>
+                            <tr>
+                                <td>@(newVisitor.BounceRate * 100)%</td>
+                                <td class="center">跳出率</td>
+                                <td>@(oldVisitor.BounceRate * 100)%</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：功能说明性内容。
+        </div>
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    require.config({
+        paths: {
+            echarts: '/Scripts/ECharts'
+        }
+    });
+    //渲染ECharts
+    function RenderECharts(chartsArea, chartOption) {
+        require([
+        'echarts',
+        'echarts/chart/pie'
+        ], function (ec) {
+            var myChart = ec.init(document.getElementById(chartsArea));
+            myChart.setOption(chartOption);
+        });
+    }
+
+    $(function () {
+
+        $('[data-toggle="popover"]').popover({ animation: true, trigger: 'hover' });
+
+        //获取系统常量
+        var domain = $('#domain').attr('value');
+        var date = $('#date').attr('value');
+
+        //访客分析-新老访客
+        TongJiApi.NewOldVisitor(date, domain, function (data) {
+
+            var option = getOption(data);
+
+            RenderECharts('map-pie', option);
+
+        });
+
+    });
+
+    function getOption(data) {
+
+        //饼图
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b} : {c}<br/>总量占比：{d}%"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['新访客', '老访客']
+            },
+            calculable: true,
+            series: [
+                {
+                    type: 'pie',
+                    data: [
+                        { name: '新访客', value: data.NewVisitorCount },
+                        { name: '老访客', value: data.OldVisitorCount }
+                    ]
+                }
+            ]
+        };
+
+
+        return option;
+    }
+
+</script>
+
+
+
+

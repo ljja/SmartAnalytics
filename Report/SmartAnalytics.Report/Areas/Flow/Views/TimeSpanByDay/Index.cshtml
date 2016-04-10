@@ -1,0 +1,186 @@
+﻿@using SmartAnalytics.Report.Areas.Flow.Models
+@using SmartAnalytics.Report.Extendsions
+@model  List<SmartAnalytics.Services.Models.TimeSpanByDayPageItem>
+@{
+
+}
+
+<input type="hidden" id="date" name="date" value="@ViewBag.BeginDate-@ViewBag.EndDate" />
+<input type="hidden" id="beginDate" value="@ViewBag.BeginDate" />
+<input type="hidden" id="endDate" value="@ViewBag.EndDate" />
+
+<div class="row">
+
+    @Html.Partial("_PartialMenu")
+
+    <div class="col-md-9 ">
+
+        <ol class="breadcrumb">
+            <li><a href="/">SmartAnalytics</a></li>
+            <li><a href="/Flow">流量分析</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+
+        <!--网站域名-->
+        @Html.Partial("_PartialSiteDomain", ViewBag.AllDomain as List<SmartAnalytics.Entities.Domain>)
+
+        <!--工具栏-->
+        @Html.Partial("_PartialToolBar")
+
+        <!--概况栏-->
+        @Html.Partial("_PartialPrimaryIndicators", @ViewBag.PrimaryIndicators as PrimaryIndicators)
+
+        <!--图表栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计图表</h3>
+            </div>
+            <div class="panel-body">
+                <div id="map-TimeSpanByDay" style="height: 300px;"></div>
+            </div>
+        </div>
+
+        <!--表格栏-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">统计报表</h3>
+            </div>
+
+            <table class="table table-hover table-striped table-condensed table-bordered center">
+                <thead>
+                    <tr>
+                        <th class="center">时段</th>
+                        <th class="center">PV</th>
+                        <th class="center">UV</th>
+                        <th class="center">IP</th>
+                        <th class="center">新访客</th>
+                        <th class="center">新访客比率</th>
+                        <th class="center">人均浏览页数</th>
+                        <th class="center">平均访问深度</th>
+                        <th class="center">平均访问时长</th>
+                        <th class="center">跳出率</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@Model[i].TotalDate.ToString("yyyy-MM-dd")</td>
+                            <td>@Model[i].PageView</td>
+                            <td>@Model[i].UniqueUser</td>
+                            <td>@Model[i].UniqueIp</td>
+                            <td>@Model[i].NewUniqueUser</td>
+                            <td>@(Model[i].NewUniqueUserRate * 100)%</td>
+                            <td>@Model[i].UserViewPageAverage</td>
+                            <td>@Model[i].ViewPageDeptAverage</td>
+                            <td>@Model[i].ViewPageTimeSpanAverage.ToTimeSpan()</td>
+                            <td>@(Model[i].BounceRate * 100)%</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            说明：提示性信息。
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require.config({
+        paths: {
+            echarts: '/Scripts/ECharts'
+        }
+    });
+    //渲染ECharts
+    function RenderECharts(chartsArea, chartOption) {
+        require([
+        'echarts',
+        'echarts/chart/line',
+        'echarts/chart/bar'
+        ], function (ec) {
+            var myChart = ec.init(document.getElementById(chartsArea));
+            myChart.setOption(chartOption);
+        });
+    }
+
+    $(function () {
+        $('[data-toggle="popover"]').popover({ animation: true, trigger: 'hover' });
+
+        var domain = $('#domain').attr('value');
+        var beginDate = $('#beginDate').attr('value');
+        var endDate = $('#endDate').attr('value');
+
+        TongJiApi.TimeSpanByDay(domain, beginDate, endDate, function (data) {
+            var option = getOption(domain, beginDate, endDate, data);
+            RenderECharts('map-TimeSpanByDay', option);
+        });
+    });
+    
+    function getOption(domain, beginDate, endDate, data) {
+        var option = {
+            title: {
+                text: beginDate + '至' + endDate,
+                subtext: domain
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['浏览次数PV', '独立访客UV', '独立访客IP']
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    name: '日期',
+                    boundaryGap: false,
+                    data: []
+                }
+            ],
+            yAxis: [
+                {
+                    name: '数量',
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '浏览次数PV',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '独立访客UV',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '独立访客IP',
+                    type: 'line',
+                    data: []
+                }
+            ]
+        };
+
+        $.each(data, function (k, v) {
+            //X轴
+            option.xAxis[0].data.push(v.TotalDateString);
+            //浏览次数PV
+            option.series[0].data.push(v.PageView);
+            //独立访客UV
+            option.series[1].data.push(v.UniqueUser);
+            //独立访客IP
+            option.series[2].data.push(v.UniqueIp);
+        });
+
+        return option;
+    }
+
+</script>
+
+
