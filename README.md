@@ -35,23 +35,67 @@ nginx、lua、redis、hdfs、mapreduce、hive、hbase、kafka、spark、sqlserve
 
 # 功能清单
 
+## 统计概况
+![统计概况](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/统计概况.png)
+
+## 域名管理
+![域名管理](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/域名管理.png)
+
 ## 流量分析
 
-### 流量分析-按小时统计
-![流量分析-按小时统计](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/流量分析-按小时统计.png)
+### 按小时统计
+![按小时统计](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/流量分析-按小时统计.png)
 
-### 流量分析-按日统计
-![流量分析-按日统计](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/流量分析-按日统计.png)
+### 按日统计
+![按日统计](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/流量分析-按日统计.png)
 
 ### 流量分析-流量趋势
-![流量分析-流量趋势](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/流量分析-流量趋势.png)
-
+![流量趋势](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/流量分析-流量趋势.png)
 
 ## 来源分析
 
-## 受访分析
+### 来源分类
+![来源分类](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/来源分析-来源分类.png)
+
+### 搜索引擎
+![搜索引擎](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/来源分析-搜索引擎.png)
+
+### 搜索词
+![搜索词](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/来源分析-搜索词.png)
+
+### 来源域名
+![来源域名](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/来源分析-来源域名.png)
+
+### 来源页面
+![来源页面](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/来源分析-来源页面.png)
 
 ## 访客分析
+
+### 地域分布
+![地域分布](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/访客分析-地域分布.png)
+
+### 系统环境
+![系统环境](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/访客分析-分辨率-系统环境.png)
+
+### 新老访客
+![新老访客](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/访客分析-新老访客.png)
+
+### 忠诚度
+![忠诚度](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/访客分析-忠诚度.png)
+
+### 活跃度
+![活跃度](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/访客分析-活跃度.png)
+
+## 受访分析
+
+### 热力图
+![热力图](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/受访分析-热力图.png)
+
+### 鼠标轨迹
+![鼠标轨迹](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/受访分析-鼠标轨迹.png)
+
+### 受访域名
+![受访域名](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/受访分析-受访域名.png)
 
 # 演示地址
 
