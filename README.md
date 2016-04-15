@@ -11,21 +11,21 @@ nginx、lua、redis、hdfs、mapreduce、hive、hbase、kafka、spark、sqlserve
 ![日志格式](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/log-format.png)
 
 # 追踪脚本
-		<script type="text/javascript">
-			var _wyma = _wyma || [];
-			_wyma.push(['_setAccount', 'tongjicode']);
-			_wyma.push(['_trackPageview']);
-			_wyma.push(['_trackSubmit']);
-			_wyma.push(['_trackClick']);
-			_wyma.push(['_trackMover']);
-			_wyma.push(['_trackClose']);
-			_wyma.push(['_trackClsTag']);
-			(function() {
-				var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
-				ma.src = ('https:' == document.location.protocol ? 'https://ma' : 'http://ma') + '.log.com/ta.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
-			})();
-		</script>
+	<script type="text/javascript">
+		var _wyma = _wyma || [];
+		_wyma.push(['_setAccount', 'tongjicode']);
+		_wyma.push(['_trackPageview']);
+		_wyma.push(['_trackSubmit']);
+		_wyma.push(['_trackClick']);
+		_wyma.push(['_trackMover']);
+		_wyma.push(['_trackClose']);
+		_wyma.push(['_trackClsTag']);
+		(function() {
+			var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
+			ma.src = ('https:' == document.location.protocol ? 'https://ma' : 'http://ma') + '.log.com/ta.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
+		})();
+	</script>
 
 # 功能特性
 
@@ -36,6 +36,16 @@ nginx、lua、redis、hdfs、mapreduce、hive、hbase、kafka、spark、sqlserve
 # 功能清单
 
 ## 流量分析
+
+### 流量分析-按小时统计
+![流量分析-按小时统计](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/流量分析-按小时统计.png)
+
+### 流量分析-按日统计
+![流量分析-按日统计](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/流量分析-按日统计.png)
+
+### 流量分析-流量趋势
+![流量分析-流量趋势](https://raw.githubusercontent.com/ljja/SmartAnalytics/master/doc/流量分析-流量趋势.png)
+
 
 ## 来源分析
 
